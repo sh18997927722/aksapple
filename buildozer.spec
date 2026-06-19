@@ -42,12 +42,10 @@ warn_on_root = 0
 # buildozer 版本
 buildozer.version = 1.5.0
 
-
 [buildozer]
 
 # 构建时显示完整日志
 verbose = 2
-
 
 # ============================================================
 # Android 特定配置
@@ -70,10 +68,6 @@ android.navigationbar.color = #0d1117
 # 主题: dark 或 light
 android.theme = dark
 
-# App 图标（32位PNG，建议 96x96 或 512x512）
-# icon.filename = icon.png
-
-
 # ============================================================
 # Python 依赖
 # ============================================================
@@ -82,11 +76,8 @@ android.theme = dark
 # 核心 Kivy 依赖
 requirements = python3,kivy==2.2.0,urllib3,lxml,pillow
 
-# 注意：kivymd 是可选的，UI 用原生 Kivy 组件已足够
-
 # Android 额外支持库
 android.gradle_dependencies = com.google.android.material:material:1.9.0
-
 
 # ============================================================
 # 字体（Android 中文支持）
@@ -94,6 +85,3 @@ android.gradle_dependencies = com.google.android.material:material:1.9.0
 [package]
 
 # 使用系统内置字体（无需额外打包）
-android.allow_backup = 1
-android.enable_androidx = 1
-android.accept_sdk_license = 1
