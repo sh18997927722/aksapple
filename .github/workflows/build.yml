@@ -33,7 +33,7 @@ jobs:
         pip3 install --upgrade pip
         pip3 install buildozer cython==0.29.19
 
-    - name: Setup Android SDK (build-tools for aidl)
+    - name: Setup Android SDK (build-tools + sdkmanager)
       run: |
         mkdir -p $HOME/android-sdk
         cd /tmp
@@ -43,13 +43,19 @@ jobs:
         mv cmdline-tools $HOME/android-sdk/cmdline-tools/latest
         export ANDROID_SDK_ROOT=$HOME/android-sdk
         yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --sdk_root=$ANDROID_SDK_ROOT "build-tools;33.0.0" "platforms;android-33"
-        mkdir -p $HOME/.buildozer/android/platform 2>/dev/null || true
-        ln -sf $ANDROID_SDK_ROOT $HOME/.buildozer/android/platform/android-sdk || true
+        # Create full SDK dir structure for buildozer
+        BDIR=$HOME/.buildozer/android/platform/android-sdk
+        mkdir -p $BDIR/build-tools/33.0.0
+        cp -r $ANDROID_SDK_ROOT/build-tools/33.0.0/* $BDIR/build-tools/33.0.0/
+        mkdir -p $BDIR/platforms/android-33
+        mkdir -p $BDIR/tools/bin
+        ln -sf $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager $BDIR/tools/bin/sdkmanager
+        ln -sf $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/apksigner $BDIR/tools/bin/apksigner || true
     
     - name: Build APK
       run: |
-        export ANDROID_SDK_ROOT=$HOME/android-sdk
-        export PATH=$HOME/android-sdk/build-tools/33.0.0:$PATH
+        export ANDROID_SDK_ROOT=$HOME/.buildozer/android/platform/android-sdk
+        export PATH=$HOME/.buildozer/android/platform/android-sdk/build-tools/33.0.0:$PATH
         cd ${{ github.workspace }}
         buildozer -v android debug 2>&1 | tee buildozer_output.txt
       env:
