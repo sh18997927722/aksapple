@@ -3,6 +3,7 @@
 # 应用标题
 source.dir = .
 title = 2026世界杯追踪器
+version = 1.0.0
 # 包名（小写+数字+下划线，不能以数字开头）
 package.name = worldcup2026
 
